@@ -137,6 +137,7 @@ class TestMime (unittest.TestCase):
         self.mime_test_file("t.apk", ("application/zip", "application/java-archive", "application/jar"))
         self.mime_test_file("t.zpaq", "application/zpaq")
         self.mime_test_file("t.zpaq.foo", "application/zpaq")
+        assert False
 
 
     @needs_program('file')
@@ -162,6 +163,7 @@ class TestMime (unittest.TestCase):
         self.mime_test_file("t.tar.gz.foo", "application/x-tar", "gzip")
         self.mime_test_file("t.taz.foo", "application/x-tar", "gzip")
         self.mime_test_file("t.tgz.foo", "application/x-tar", "gzip")
+        assert False
 
     @needs_program('file')
     @needs_program('xz')

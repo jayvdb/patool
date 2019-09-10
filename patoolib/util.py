@@ -286,10 +286,13 @@ def guess_mime_file (filename):
         file_prog = find_program("file")
         if file_prog:
             mime, encoding = guess_mime_file_mime(file_prog, filename)
+            print('file mime', mime, encoding)
             if mime is None:
                 mime = guess_mime_file_text(file_prog, filename)
                 encoding = None
+                print('text mime', mime, encoding)
     if mime in Mime2Encoding:
+        print('mime in Mime2Encoding', mime, encoding)
         # try to look inside compressed archives
         cmd = [file_prog, "--brief", "--mime", "--uncompress", filename]
         try:
@@ -308,16 +311,21 @@ def guess_mime_file (filename):
             # or is not able to uncompress.
             # Try to get mime information from the file extension.
             mime2, encoding2 = guess_mime_mimedb(filename)
+            print('mimedb', mime2, encoding2)
             if mime2 in ArchiveMimetypes:
                 mime = mime2
                 encoding = encoding2
         elif mime2 in ArchiveMimetypes:
             mime = mime2
             encoding = get_file_mime_encoding(outparts)
+            print('mime2 in ArchiveMimetypes', outparts, mime2, encoding)
+        print('near end', mime, encoding)
     # Only return mime and encoding if the given mime can natively support the encoding.
     if program_supports_compression(ArchiveMimetypes.get(mime), encoding):
+        print('have compession', mime, encoding, ArchiveMimetypes.get(mime))
         return mime, encoding
     else:
+        print('no compession', mime, encoding)
         # If encoding is None, default back to `mime`.
         return Encoding2Mime.get(encoding, mime), None
 
@@ -335,6 +343,8 @@ def guess_mime_file_mime (file_prog, filename):
         pass
     if mime not in ArchiveMimetypes:
         mime, encoding = None, None
+    else:
+        encoding = ArchiveMimetypes.get(mime)
     return mime, encoding
 
 
